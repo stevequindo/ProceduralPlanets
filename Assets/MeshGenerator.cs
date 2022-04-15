@@ -6,7 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class MeshGenerator : MonoBehaviour
 {
-
     Mesh mesh;
         
     Vector3[] vertices;

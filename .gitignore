@@ -34,3 +34,14 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+#Stuff
+.vsconfig
+Assets/Scripts.meta
+Assets/Settings.meta
+Logs/
+Packages/
+ProjectSettings/
+UserSettings/
+mono_crash.0.0.json
+mono_crash.9adc8497e.0.json
