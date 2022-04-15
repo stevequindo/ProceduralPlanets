@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TerrainFace
 {
+    ShapeGenerator shapeGenerator;
     Mesh mesh;
     int resolution;
     Vector3 localUp;
@@ -15,8 +16,9 @@ public class TerrainFace
 
     public bool running = true;
 
-    public TerrainFace(Mesh mesh, int resolution, Vector3 localUp)
+    public TerrainFace(ShapeGenerator shapeGenerator, Mesh mesh, int resolution, Vector3 localUp)
     {
+        this.shapeGenerator = shapeGenerator;
         this.mesh = mesh;
         this.resolution = resolution;
         this.localUp = localUp;
@@ -61,7 +63,7 @@ public class TerrainFace
                 // from the center, meaning we get a circle.
                 Vector3 pointOnUnitSphere = pointOnUnitCube.normalized;
 
-                vertices[i] = pointOnUnitCube;
+                vertices[i] = shapeGenerator.CalculatePointOnPlanet(pointOnUnitSphere);
 
                 // If were in the last row or last col, then do it.
                 // original x != resolution-1 && y != resolution-1

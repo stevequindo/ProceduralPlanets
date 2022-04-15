@@ -6,22 +6,28 @@ public class Planet : MonoBehaviour {
 
     [Range(2,256)]
     public int resolution = 50;
+    public bool autoUpdate = true;
 
-    [SerializeField]
+    public ShapeSettings shapeSettings;
+    public ColourSettings colourSettings;
+
+    ShapeGenerator shapeGenerator;
+
+    [SerializeField, HideInInspector]
     MeshFilter[] meshFilters;
     TerrainFace[] terrainFaces;
 
     // Editor-only function that Unity calls when the script is loaded or a value changes in the Inspector.
-    // You would usually use this to perform an action after a value changes in the Inspector; for example, making sure that data stays within a certain range.
-
-    void OnValidate()
-	{
-        Initialize();
-        GenerateMesh();
-    }
+    // You would usually use this to perform an action after a value changes in the Inspector; for example, making sure that data stays within a certain range
+ //   void OnValidate()
+	//{
+ //       GeneratePlanet();
+ //   }
 
     void Initialize()
     {
+        shapeGenerator = new ShapeGenerator(shapeSettings);
+
         if (meshFilters == null || meshFilters.Length == 0)
         {
             meshFilters = new MeshFilter[6];
@@ -43,7 +49,33 @@ public class Planet : MonoBehaviour {
                 meshFilters[i].sharedMesh = new Mesh();
             }
 
-            terrainFaces[i] = new TerrainFace(meshFilters[i].sharedMesh, resolution, directions[i]);
+            terrainFaces[i] = new TerrainFace(shapeGenerator, meshFilters[i].sharedMesh, resolution, directions[i]);
+        }
+    }
+
+    public void GeneratePlanet()
+    {
+        Initialize();
+        GenerateMesh();
+        GenerateColours();
+    }
+
+    public void OnShapeSettingsUpdated()
+    {
+        if (autoUpdate)
+        {
+            Initialize();
+            GenerateMesh();
+        }
+
+    }
+
+    public void OnColourSettingsUpdated()
+    {
+        if (autoUpdate)
+        {
+            Initialize();
+            GenerateColours();
         }
     }
 
@@ -51,10 +83,15 @@ public class Planet : MonoBehaviour {
     {
         foreach (TerrainFace face in terrainFaces)
         {
-
             face.ConstructMesh();
-
         }
+    }
 
+    void GenerateColours()
+    {
+        foreach (MeshFilter m in meshFilters)
+        {
+            m.GetComponent<MeshRenderer>().sharedMaterial.color = colourSettings.planetColour;
+        }
     }
 }
