@@ -6,18 +6,17 @@ public class ShapeGenerator
 {
 
     ShapeSettings shapeSettings;
-    NoiseFilter[] noiseFilters;
+    INoiseFilter[] noiseFilters;
 
     public ShapeGenerator(ShapeSettings shapeSettings)
     {
         this.shapeSettings = shapeSettings;
-        this.noiseFilters = new NoiseFilter[shapeSettings.noiseLayers.Length];
+        this.noiseFilters = new INoiseFilter[shapeSettings.noiseLayers.Length];
 
         for (int i = 0; i < noiseFilters.Length; i++)
         {
-            noiseFilters[i] = new NoiseFilter(shapeSettings.noiseLayers[i].noiseSettings);
+            noiseFilters[i] = NoiseFilterFactory.CreateNoiseFilter(shapeSettings.noiseLayers[i].noiseSettings);
         }
-
     }
 
     public Vector3 CalculatePointOnPlanet(Vector3 pointOnUnitSphere)

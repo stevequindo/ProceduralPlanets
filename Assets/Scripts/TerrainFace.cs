@@ -91,7 +91,6 @@ public class TerrainFace
 
     public void UpdateMesh()
     {
-        Debug.Log("updating mesh yoyoyo");
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
